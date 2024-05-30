@@ -9,47 +9,94 @@ namespace Poe_part_2
     public class Recipe
     {
         public string Name { get; private set; }
-        public List<Ingredient> Ingredient { get; private set; }
-        public List<Steps> Steps { get; private set; }
+        private List<Ingredient> ingredients = new List<Ingredient>();
+        private List<string> stepDescriptions = new List<string>();
 
-        public delegate void CaloriesExceededHandler(string recipeName, double totalCalories);
-        public event CaloriesExceededHandler OnCaloriesExceeded;
-
-        public Recipe(string name)
+        public void GetRecipeDetails()
         {
-            Name = name;
-            Ingredient = new List<Ingredient>();
-            Steps = new List<Steps>();
+            Console.WriteLine("Please enter the name of the recipe:");
+            Name = Console.ReadLine();
+
+            GetIngredients();
+            GetSteps();
         }
 
-        public void AddIngredient(string name, double quantity, string unit, double calories, string foodGroup)
+        public void GetIngredients()
         {
-            Ingredient ingredient = new Ingredient
-            {
-                Name = name,
-                Quantity = quantity,
-                Unit = unit,
-                Calories = calories,
-                FoodGroup = foodGroup
-            };
-            Ingredient.Add(ingredient);
+            Console.WriteLine("Please enter the number of ingredients:");
+            int ingredientCount = int.Parse(Console.ReadLine());
 
-            double totalCalories = CalculateTotalCalories();
-            if (totalCalories > 300)
+            for (int i = 0; i < ingredientCount; i++)
             {
-                OnCaloriesExceeded?.Invoke(Name, totalCalories);
+                Console.WriteLine($"Enter details for ingredient {i + 1}:");
+                Console.Write("Name: ");
+                string name = Console.ReadLine();
+                Console.Write("Quantity: ");
+                double quantity = double.Parse(Console.ReadLine());
+                Console.Write("Unit: ");
+                string unit = Console.ReadLine();
+                Console.Write("Calories: ");
+                double calories = double.Parse(Console.ReadLine());
+                Console.Write("Food Group: ");
+                string foodGroup = Console.ReadLine();
+
+                ingredients.Add(new Ingredient(name, quantity, unit, calories, foodGroup));
             }
         }
 
-        public void AddStep(string description)
+        public void GetSteps()
         {
-            Steps step = new Steps { Description = description };
-            Steps.Add(step);
+            Console.WriteLine("Enter the number of steps:");
+            int stepCount = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < stepCount; i++)
+            {
+                Console.WriteLine($"Enter description for step {i + 1}:");
+                stepDescriptions.Add(Console.ReadLine());
+            }
+        }
+
+        public void DisplayRecipe()
+        {
+            Console.WriteLine($"\nRecipe: {Name}");
+            Console.WriteLine("Ingredients:");
+            foreach (var ingredient in ingredients)
+            {
+                Console.WriteLine($"- {ingredient.Quantity} {ingredient.Unit} of {ingredient.Name} ({ingredient.Calories} calories, {ingredient.FoodGroup})");
+            }
+            Console.WriteLine("\nSteps:");
+            for (int i = 0; i < stepDescriptions.Count; i++)
+            {
+                Console.WriteLine($"- {i + 1}. {stepDescriptions[i]}");
+            }
+            Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories()}");
         }
 
         public double CalculateTotalCalories()
         {
-            return Ingredient.Sum(ingredient => ingredient.Calories);
+            return ingredients.Sum(ingredient => ingredient.Calories * ingredient.Quantity);
+        }
+
+        public void ScaleRecipe(double factor)
+        {
+            foreach (var ingredient in ingredients)
+            {
+                ingredient.Quantity *= factor;
+            }
+        }
+
+        public void ResetQuantities()
+        {
+            foreach (var ingredient in ingredients)
+            {
+                ingredient.ResetQuantity();
+            }
+        }
+
+        public void ClearData()
+        {
+            ingredients.Clear();
+            stepDescriptions.Clear();
         }
     }
 }
