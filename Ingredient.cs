@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Poe_part_2
 {
-    internal class Ingredient
+    public class Ingredient
     {
+        public string Name { get; set; }
+        public double Quantity { get; set; }
+        public string Unit { get; set; }
+        public double Calories { get; set; }
+        public string FoodGroup { get; set; }
     }
 }

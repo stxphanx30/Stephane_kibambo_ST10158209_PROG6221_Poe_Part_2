@@ -109,7 +109,7 @@ namespace Poe_part_2
 
             Console.WriteLine($"Recipe: {recipe.Name}");
             Console.WriteLine("Ingredients:");
-            foreach (var ingredient in recipe.Ingredients)
+            foreach (var ingredient in recipe.Ingredient)
             {
                 Console.WriteLine($"{ingredient.Name}, {ingredient.Quantity} {ingredient.Unit}, {ingredient.Calories} calories, {ingredient.FoodGroup}");
             }
