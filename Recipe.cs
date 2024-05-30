@@ -8,7 +8,7 @@ namespace Poe_part_2
 {
     public class Recipe
     {
-        public string Name { get; private set; }
+        public string Name { get; set; }
         private List<Ingredient> ingredients = new List<Ingredient>();
         private List<string> stepDescriptions = new List<string>();
 
@@ -74,7 +74,7 @@ namespace Poe_part_2
 
         public double CalculateTotalCalories()
         {
-            return ingredients.Sum(ingredient => ingredient.Calories * ingredient.Quantity);
+            return ingredients.Sum(ingredient => ingredient.Calories + ingredient.Quantity);
         }
 
         public void ScaleRecipe(double factor)
